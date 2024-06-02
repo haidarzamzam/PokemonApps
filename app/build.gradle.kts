@@ -26,6 +26,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "API_URL", "\"https://pokeapi.co/api/v2/\"")
+        }
+        debug {
+            buildConfigField("String", "API_URL", "\"https://pokeapi.co/api/v2/\"")
         }
     }
     compileOptions {
@@ -34,6 +38,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
     }
 }
 
