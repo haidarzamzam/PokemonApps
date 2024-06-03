@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.haidev.pokemonapps.data.remote.dto.PokemonDataResponse
 import com.haidev.pokemonapps.databinding.ItemMainRowBinding
+import java.util.Locale
 
 class ItemMainAdapter : RecyclerView.Adapter<ItemMainAdapter.CharactersAdapterVh>() {
     class CharactersAdapterVh(var binding: ItemMainRowBinding) :
@@ -47,7 +48,11 @@ class ItemMainAdapter : RecyclerView.Adapter<ItemMainAdapter.CharactersAdapterVh
     override fun onBindViewHolder(holder: CharactersAdapterVh, position: Int) {
         val data = asyncListDiffer.currentList[position]
         holder.binding.apply {
-            tvPokemonName.text = data.name
+            tvPokemonName.text = data.name?.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.getDefault()
+                ) else it.toString()
+            }
             Glide.with(holder.itemView.context)
                 .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png")
                 .into(holder.binding.ivPokemonPicture)
