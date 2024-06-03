@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PokemonApps</string>
+
+    <string name="no_internet">Please check your internet connection</string>
+    <string name="network_error">Network error, could get data, please try again!</string>
+    <string name="server_error">Server error, could get data, please try again!</string>
 </resources>

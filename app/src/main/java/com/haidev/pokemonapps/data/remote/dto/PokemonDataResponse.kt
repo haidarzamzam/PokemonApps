@@ -13,6 +13,7 @@ data class PokemonDataResponse(
     @Parcelize
     data class Result(
         val name: String?,
-        val url: String?
+        val url: String?,
+        val id: Int?
     ) : Parcelable
 }
