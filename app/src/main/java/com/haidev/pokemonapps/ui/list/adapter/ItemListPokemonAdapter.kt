@@ -10,7 +10,8 @@ import com.haidev.pokemonapps.data.remote.dto.PokemonDataResponse
 import com.haidev.pokemonapps.databinding.ItemMainRowBinding
 import java.util.Locale
 
-class ItemListPokemonAdapter : RecyclerView.Adapter<ItemListPokemonAdapter.CharactersAdapterVh>() {
+class ItemListPokemonAdapter(private val onItemClicked: (PokemonDataResponse.Result) -> Unit) :
+    RecyclerView.Adapter<ItemListPokemonAdapter.CharactersAdapterVh>() {
     class CharactersAdapterVh(var binding: ItemMainRowBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -56,6 +57,12 @@ class ItemListPokemonAdapter : RecyclerView.Adapter<ItemListPokemonAdapter.Chara
             Glide.with(holder.itemView.context)
                 .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png")
                 .into(holder.binding.ivPokemonPicture)
+        }
+
+        holder.itemView.setOnClickListener {
+            if (data != null) {
+                onItemClicked(data)
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package com.haidev.pokemonapps.ui.list
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -13,7 +14,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.haidev.pokemonapps.R
-import com.haidev.pokemonapps.databinding.ActivityMainBinding
+import com.haidev.pokemonapps.databinding.ActivityListPokemonBinding
+import com.haidev.pokemonapps.ui.detail.DetailPokemonActivity
 import com.haidev.pokemonapps.ui.list.adapter.ItemListPokemonAdapter
 import com.haidev.pokemonapps.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,22 +23,28 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ListPokemonActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-    private val mainViewModel: ListPokemonViewModel by viewModels<ListPokemonViewModel>()
+    private lateinit var binding: ActivityListPokemonBinding
+    private val viewModel: ListPokemonViewModel by viewModels<ListPokemonViewModel>()
 
-    private val adapterMain by lazy { ItemListPokemonAdapter() }
+    private val adapterMain by lazy {
+        ItemListPokemonAdapter {
+            val intent = Intent(this, DetailPokemonActivity::class.java)
+            intent.putExtra("data", it)
+            startActivity(intent)
+        }
+    }
     private val paginationScrollListener by lazy {
         PaginationScrollListener(
             binding.rvPokemon.layoutManager as LinearLayoutManager
         ) {
-            mainViewModel.offsetValue.value += 20
-            mainViewModel.getPokemon()
+            viewModel.offsetValue.value += 20
+            viewModel.getPokemon()
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityListPokemonBinding.inflate(layoutInflater)
         val view: View = binding.getRoot()
         setContentView(view)
 
@@ -48,7 +56,8 @@ class ListPokemonActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         binding.rvPokemon.apply {
-            layoutManager = LinearLayoutManager(this@ListPokemonActivity, RecyclerView.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(this@ListPokemonActivity, RecyclerView.VERTICAL, false)
             adapter = adapterMain
             addOnScrollListener(paginationScrollListener)
         }
@@ -57,7 +66,7 @@ class ListPokemonActivity : AppCompatActivity() {
     private fun initData() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.dataPokemon.collect {
+                viewModel.dataPokemon.collect {
                     when (it) {
                         is Resource.Loading -> {
                             binding.pbLoading.isVisible = true
@@ -73,7 +82,6 @@ class ListPokemonActivity : AppCompatActivity() {
                         is Resource.Error -> {
                             binding.pbLoading.isVisible = false
                         }
-
                     }
                 }
             }
