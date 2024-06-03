@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.haidev.pokemonapps.R
 import com.haidev.pokemonapps.databinding.ActivityListPokemonBinding
 import com.haidev.pokemonapps.ui.detail.DetailPokemonActivity
+import com.haidev.pokemonapps.ui.favorite.FavoritePokemonActivity
 import com.haidev.pokemonapps.ui.list.adapter.ItemListPokemonAdapter
 import com.haidev.pokemonapps.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -130,6 +131,7 @@ class ListPokemonActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_favorite -> {
+                startActivity(Intent(this@ListPokemonActivity, FavoritePokemonActivity::class.java))
                 true
             }
 

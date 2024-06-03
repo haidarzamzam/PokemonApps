@@ -19,7 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="Pokemon Apps"
+            app:title="Detail Pokemon"
             app:titleTextColor="@color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
