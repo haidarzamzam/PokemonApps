@@ -1,6 +1,8 @@
 package com.haidev.pokemonapps.ui
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.haidev.pokemonapps.R
 import com.haidev.pokemonapps.databinding.ActivityMainBinding
 import com.haidev.pokemonapps.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,12 +39,21 @@ class MainActivity : AppCompatActivity() {
         val view: View = binding.getRoot()
         setContentView(view)
 
+        initUI()
+        initData()
+    }
+
+    private fun initUI() {
+        setSupportActionBar(binding.toolbar)
+
         binding.rvPokemon.apply {
             layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
             adapter = adapterMain
             addOnScrollListener(paginationScrollListener)
         }
+    }
 
+    private fun initData() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mainViewModel.dataPokemon.collect {
@@ -54,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                             binding.pbLoading.isVisible = false
                             adapterMain.saveData(it.data)
                             paginationScrollListener.setLoaded()
+                            paginationScrollListener.setLastPage(it.data?.isEmpty() == true)
                         }
 
                         is Resource.Error -> {
@@ -97,6 +110,21 @@ class MainActivity : AppCompatActivity() {
 
         fun setLastPage(lastPage: Boolean) {
             isLastPage = lastPage
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_favorite -> {
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }
