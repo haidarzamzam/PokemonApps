@@ -1,4 +1,4 @@
-package com.haidev.pokemonapps.ui
+package com.haidev.pokemonapps.ui.list
 
 import android.os.Bundle
 import android.view.Menu
@@ -14,16 +14,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.haidev.pokemonapps.R
 import com.haidev.pokemonapps.databinding.ActivityMainBinding
+import com.haidev.pokemonapps.ui.list.adapter.ItemListPokemonAdapter
 import com.haidev.pokemonapps.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class ListPokemonActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val mainViewModel: MainViewModel by viewModels<MainViewModel>()
+    private val mainViewModel: ListPokemonViewModel by viewModels<ListPokemonViewModel>()
 
-    private val adapterMain by lazy { ItemMainAdapter() }
+    private val adapterMain by lazy { ItemListPokemonAdapter() }
     private val paginationScrollListener by lazy {
         PaginationScrollListener(
             binding.rvPokemon.layoutManager as LinearLayoutManager
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         binding.rvPokemon.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
+            layoutManager = LinearLayoutManager(this@ListPokemonActivity, RecyclerView.VERTICAL, false)
             adapter = adapterMain
             addOnScrollListener(paginationScrollListener)
         }

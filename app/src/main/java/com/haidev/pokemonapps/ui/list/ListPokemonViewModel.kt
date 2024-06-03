@@ -1,4 +1,4 @@
-package com.haidev.pokemonapps.ui
+package com.haidev.pokemonapps.ui.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repository: PokemonRepository) :
+class ListPokemonViewModel @Inject constructor(private val repository: PokemonRepository) :
     ViewModel() {
     private val _dataPokemon =
         MutableStateFlow<Resource<List<PokemonDataResponse.Result>>>(Resource.Loading())

@@ -1,4 +1,4 @@
-package com.haidev.pokemonapps.ui
+package com.haidev.pokemonapps.ui.list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +10,7 @@ import com.haidev.pokemonapps.data.remote.dto.PokemonDataResponse
 import com.haidev.pokemonapps.databinding.ItemMainRowBinding
 import java.util.Locale
 
-class ItemMainAdapter : RecyclerView.Adapter<ItemMainAdapter.CharactersAdapterVh>() {
+class ItemListPokemonAdapter : RecyclerView.Adapter<ItemListPokemonAdapter.CharactersAdapterVh>() {
     class CharactersAdapterVh(var binding: ItemMainRowBinding) :
         RecyclerView.ViewHolder(binding.root)
 
