@@ -30,7 +30,7 @@ class ListPokemonActivity : AppCompatActivity() {
     private val adapterMain by lazy {
         ItemListPokemonAdapter {
             val intent = Intent(this, DetailPokemonActivity::class.java)
-            intent.putExtra("data", it)
+            intent.putExtra("idPokemon", it.id)
             startActivity(intent)
         }
     }

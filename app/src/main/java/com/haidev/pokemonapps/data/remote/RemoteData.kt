@@ -3,6 +3,7 @@ package com.haidev.pokemonapps.data.remote
 import android.content.Context
 import com.haidev.pokemonapps.R
 import com.haidev.pokemonapps.data.remote.dto.PokemonDataResponse
+import com.haidev.pokemonapps.data.remote.dto.PokemonDetailDataResponse
 import com.haidev.pokemonapps.util.NetworkConnectivity
 import com.haidev.pokemonapps.util.Resource
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -19,6 +20,13 @@ class RemoteData @Inject constructor(
         return when (val response =
             processCall { apiService.getPokemon(offset, 20) }) {
             is PokemonDataResponse -> Resource.Success(data = response)
+            else -> Resource.Error(messageError = response as String)
+        }
+    }
+
+    override suspend fun getPokemonDetail(id: Int): Resource<PokemonDetailDataResponse> {
+        return when (val response = processCall { apiService.getPokemonDetail(id) }) {
+            is PokemonDetailDataResponse -> Resource.Success(data = response)
             else -> Resource.Error(messageError = response as String)
         }
     }
