@@ -45,8 +45,8 @@ class DetailPokemonActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.dataDetailPokemon.collect { it ->
-                    when (it) {
+                viewModel.dataDetailPokemon.collect { data ->
+                    when (data) {
                         is Resource.Loading -> {
                             binding.pbLoading.isVisible = true
                         }
@@ -54,29 +54,22 @@ class DetailPokemonActivity : AppCompatActivity() {
                         is Resource.Success -> {
                             binding.pbLoading.isVisible = false
                             binding.btnCatch.isEnabled = true
-                            binding.tvName.text = it.data?.name?.replaceFirstChar {
+                            binding.tvName.text = data.data?.name?.replaceFirstChar {
                                 if (it.isLowerCase()) it.titlecase(
                                     Locale.getDefault()
                                 ) else it.toString()
                             }
-                            binding.tvWeight.text = it.data?.weight.toString()
-                            binding.tvHeight.text = it.data?.height.toString()
-                            binding.tvTypes.text = it.data?.types?.joinToString(", ") { it.type?.name.toString() }
-                            binding.tvAbility.text = it.data?.abilities?.joinToString(", ") { it.ability?.name.toString() }
-                            binding.tvStat.text = it.data?.stats?.joinToString(", ") { it.stat?.name.toString() }
+                            binding.tvWeight.text = data.data?.weight.toString()
+                            binding.tvHeight.text = data.data?.height.toString()
+                            binding.tvTypes.text = data.data?.types?.joinToString(", ") { it.type?.name.toString() }
+                            binding.tvAbility.text = data.data?.abilities?.joinToString(", ") { it.ability?.name.toString() }
+                            binding.tvStat.text = data.data?.stats?.joinToString(", ") { it.stat?.name.toString() }
                             binding.btnCatch.setOnClickListener {
                                 if (Random.nextBoolean()) {
-                                    Toast.makeText(
-                                        this@DetailPokemonActivity,
-                                        "Success Catch Pokemon",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    Toast.makeText(this@DetailPokemonActivity, "Success Catch Pokemon", Toast.LENGTH_SHORT).show()
+                                    data.data?.let { data -> viewModel.catchPokemon(data) }
                                 } else {
-                                    Toast.makeText(
-                                        this@DetailPokemonActivity,
-                                        "Failed",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    Toast.makeText(this@DetailPokemonActivity, "Failed Catch Pokemon, Try Again", Toast.LENGTH_SHORT).show()
                                 }
                             }
                         }

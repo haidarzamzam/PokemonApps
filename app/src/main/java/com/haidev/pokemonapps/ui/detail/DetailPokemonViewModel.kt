@@ -3,6 +3,7 @@ package com.haidev.pokemonapps.ui.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.haidev.pokemonapps.data.PokemonRepository
+import com.haidev.pokemonapps.data.local.entity.PokemonEntity
 import com.haidev.pokemonapps.data.remote.dto.PokemonDetailDataResponse
 import com.haidev.pokemonapps.util.ErrorUtils
 import com.haidev.pokemonapps.util.Resource
@@ -30,6 +31,17 @@ class DetailPokemonViewModel @Inject constructor(private val repository: Pokemon
                 .collect {
                     _dataDetailPokemon.value = it
                 }
+        }
+    }
+
+    fun catchPokemon(data: PokemonDetailDataResponse) {
+        viewModelScope.launch {
+            val pokemonEntity = PokemonEntity(
+                id = data.id.toString(),
+                name = data.name.toString(),
+                fibonacci = 0
+            )
+            repository.insertPokemonLocal(pokemonEntity)
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.haidev.pokemonapps.data
 
+import com.haidev.pokemonapps.data.local.entity.PokemonEntity
+import com.haidev.pokemonapps.data.local.room.PokemonDao
 import com.haidev.pokemonapps.data.remote.RemoteData
 import com.haidev.pokemonapps.data.remote.dto.PokemonDataResponse
 import com.haidev.pokemonapps.data.remote.dto.PokemonDetailDataResponse
@@ -12,6 +14,7 @@ import kotlin.coroutines.CoroutineContext
 
 class PokemonRepository @Inject constructor(
     private val remoteData: RemoteData,
+    private val localData: PokemonDao,
     private val ioDispatcher: CoroutineContext
 ) {
     fun getPokemon(offset: Int): Flow<Resource<PokemonDataResponse>> {
@@ -24,5 +27,15 @@ class PokemonRepository @Inject constructor(
         return flow {
             emit(remoteData.getPokemonDetail(id))
         }.flowOn(ioDispatcher)
+    }
+
+    fun getAllPokemonLocal(): Flow<List<PokemonEntity>> {
+        return flow {
+            emit(localData.getAllPokemon())
+        }.flowOn(ioDispatcher)
+    }
+
+    fun insertPokemonLocal(pokemonEntity: PokemonEntity) {
+        localData.insertPokemon(pokemonEntity)
     }
 }
