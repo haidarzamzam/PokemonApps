@@ -27,7 +27,7 @@ class ListPokemonActivity : AppCompatActivity() {
     private lateinit var binding: ActivityListPokemonBinding
     private val viewModel: ListPokemonViewModel by viewModels<ListPokemonViewModel>()
 
-    private val adapterMain by lazy {
+    private val adapterPokemon by lazy {
         ItemListPokemonAdapter {
             val intent = Intent(this, DetailPokemonActivity::class.java)
             intent.putExtra("idPokemon", it.id)
@@ -59,7 +59,7 @@ class ListPokemonActivity : AppCompatActivity() {
         binding.rvPokemon.apply {
             layoutManager =
                 LinearLayoutManager(this@ListPokemonActivity, RecyclerView.VERTICAL, false)
-            adapter = adapterMain
+            adapter = adapterPokemon
             addOnScrollListener(paginationScrollListener)
         }
     }
@@ -75,7 +75,7 @@ class ListPokemonActivity : AppCompatActivity() {
 
                         is Resource.Success -> {
                             binding.pbLoading.isVisible = false
-                            adapterMain.saveData(it.data)
+                            adapterPokemon.saveData(it.data)
                             paginationScrollListener.setLoaded()
                             paginationScrollListener.setLastPage(it.data?.isEmpty() == true)
                         }

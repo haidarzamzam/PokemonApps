@@ -34,11 +34,11 @@ class DetailPokemonViewModel @Inject constructor(private val repository: Pokemon
         }
     }
 
-    fun catchPokemon(data: PokemonDetailDataResponse) {
+    fun catchPokemon(nickname: String, id: String) {
         viewModelScope.launch {
             val pokemonEntity = PokemonEntity(
-                id = data.id.toString(),
-                name = data.name.toString(),
+                id = id,
+                nickname = nickname,
                 fibonacci = 0
             )
             repository.insertPokemonLocal(pokemonEntity)

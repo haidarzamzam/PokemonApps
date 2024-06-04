@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.haidev.pokemonapps.data.remote.dto.PokemonDataResponse
-import com.haidev.pokemonapps.databinding.ItemMainRowBinding
+import com.haidev.pokemonapps.databinding.ItemPokemonRowBinding
 import java.util.Locale
 
 class ItemListPokemonAdapter(private val onItemClicked: (PokemonDataResponse.Result) -> Unit) :
     RecyclerView.Adapter<ItemListPokemonAdapter.CharactersAdapterVh>() {
-    class CharactersAdapterVh(var binding: ItemMainRowBinding) :
+    class CharactersAdapterVh(var binding: ItemPokemonRowBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     private val diffUtil = object : DiffUtil.ItemCallback<PokemonDataResponse.Result>() {
@@ -42,7 +42,7 @@ class ItemListPokemonAdapter(private val onItemClicked: (PokemonDataResponse.Res
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             CharactersAdapterVh {
         val binding =
-            ItemMainRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemPokemonRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CharactersAdapterVh(binding)
     }
 

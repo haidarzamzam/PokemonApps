@@ -38,4 +38,13 @@ class PokemonRepository @Inject constructor(
     fun insertPokemonLocal(pokemonEntity: PokemonEntity) {
         localData.insertPokemon(pokemonEntity)
     }
+
+    suspend fun updatePokemonLocal(pokemonEntity: PokemonEntity) {
+        localData.updatePokemon(pokemonEntity)
+    }
+
+    fun deletePokemonLocal(pokemonEntity: PokemonEntity) {
+        localData.deletePokemon(pokemonEntity)
+    }
+
 }

@@ -1,10 +1,15 @@
 package com.haidev.pokemonapps.ui.detail
 
+import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -37,6 +42,7 @@ class DetailPokemonActivity : AppCompatActivity() {
 
     private fun initData() {
         val idPokemon = intent.getIntExtra("idPokemon", 0)
+        val isFromFav = intent.getBooleanExtra("isFromFav", false)
         viewModel.getDetailPokemon(idPokemon)
 
         Glide.with(this@DetailPokemonActivity)
@@ -53,6 +59,7 @@ class DetailPokemonActivity : AppCompatActivity() {
 
                         is Resource.Success -> {
                             binding.pbLoading.isVisible = false
+                            binding.btnCatch.isVisible = !isFromFav
                             binding.btnCatch.isEnabled = true
                             binding.tvName.text = data.data?.name?.replaceFirstChar {
                                 if (it.isLowerCase()) it.titlecase(
@@ -61,15 +68,24 @@ class DetailPokemonActivity : AppCompatActivity() {
                             }
                             binding.tvWeight.text = data.data?.weight.toString()
                             binding.tvHeight.text = data.data?.height.toString()
-                            binding.tvTypes.text = data.data?.types?.joinToString(", ") { it.type?.name.toString() }
-                            binding.tvAbility.text = data.data?.abilities?.joinToString(", ") { it.ability?.name.toString() }
-                            binding.tvStat.text = data.data?.stats?.joinToString(", ") { it.stat?.name.toString() }
+                            binding.tvTypes.text =
+                                data.data?.types?.joinToString(", ") { it.type?.name.toString() }
+                            binding.tvAbility.text =
+                                data.data?.abilities?.joinToString(", ") { it.ability?.name.toString() }
+                            binding.tvStat.text =
+                                data.data?.stats?.joinToString(", ") { it.stat?.name.toString() }
                             binding.btnCatch.setOnClickListener {
                                 if (Random.nextBoolean()) {
-                                    Toast.makeText(this@DetailPokemonActivity, "Success Catch Pokemon", Toast.LENGTH_SHORT).show()
-                                    data.data?.let { data -> viewModel.catchPokemon(data) }
+                                    showInputDialog(
+                                        this@DetailPokemonActivity,
+                                        data.data?.id.toString()
+                                    )
                                 } else {
-                                    Toast.makeText(this@DetailPokemonActivity, "Failed Catch Pokemon, Try Again", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        this@DetailPokemonActivity,
+                                        "Failed Catch Pokemon, Try Again",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
                         }
@@ -88,6 +104,25 @@ class DetailPokemonActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         binding.toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, R.color.white))
+    }
+
+    private fun showInputDialog(context: Context, idPokemon: String) {
+        val builder = AlertDialog.Builder(context)
+        val view = LayoutInflater.from(context).inflate(R.layout.dialog_nickname_pokemon, null)
+        builder.setView(view)
+
+        val etNickname = view.findViewById<EditText>(R.id.etNickname)
+        val btnSave = view.findViewById<Button>(R.id.btnSave)
+
+        val dialog = builder.create()
+        dialog.show()
+
+        btnSave.setOnClickListener {
+            val inputText = etNickname.text.toString()
+            Toast.makeText(context, "Catch: $inputText Success", Toast.LENGTH_SHORT).show()
+            viewModel.catchPokemon(inputText, idPokemon)
+            dialog.dismiss()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

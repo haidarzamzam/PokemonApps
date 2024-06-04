@@ -9,4 +9,5 @@
     <string name="stats">Stats</string>
     <string name="abilities">Abilities</string>
     <string name="types">Types</string>
+    <string name="input_your_pokemon_nickname">Input your pokemon nickname</string>
 </resources>

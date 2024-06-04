@@ -10,8 +10,8 @@ data class PokemonEntity(
     @field:PrimaryKey
     val id: String = "",
 
-    @field:ColumnInfo(name = "name")
-    val name: String = "",
+    @field:ColumnInfo(name = "nickname")
+    val nickname: String = "",
 
     @field:ColumnInfo(name = "fibonacci")
     val fibonacci: Int = 0
